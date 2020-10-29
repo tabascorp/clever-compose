@@ -4,7 +4,8 @@
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "lint": "eslint src/"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/tabascorp/clever-compose/issues"
   },
-  "homepage": "https://github.com/tabascorp/clever-compose#readme"
+  "homepage": "https://github.com/tabascorp/clever-compose#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "js-yaml": "^3.14.0",
+    "update": "^0.7.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1"
+  }
 }
