@@ -1,20 +1,17 @@
 const yml = require('js-yaml');
-const serviceProps = require('./serviceProps.json');
+const serviceProps = require('./compose-data.json').serviceProps;
 var fs = require('fs');
 
-const ph = '@@@@@@';
+const ph = '##########';
 const quantities = {};
 
 module.exports = function(serviceParams, serviceInfo){
   var cc = { version: serviceInfo.composeVersion, services: {}};
 
-  if (serviceInfo.additionalComponents) {
-    if(serviceInfo.additionalComponents.indexOf('Network') !== -1) {
-      cc['networks'] = new Array(parseInt(serviceInfo.networkQuantity)).fill(`${ph}:`);
-    }
-    if(serviceInfo.additionalComponents.indexOf('Volumes') !== -1) {
-      cc['volumes'] = new Array(parseInt(serviceInfo.volumesQuantity)).fill(`${ph}:`);
-    }
+  if(serviceInfo.additionalComponents) {
+    serviceInfo.additionalComponents.forEach((item) => {
+      cc[item] = new Array(parseInt(serviceInfo[`${item}Quantity`])).fill(`${ph}:`);
+    });
   }
 
   serviceParams.forEach((item) => {

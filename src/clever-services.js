@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const buildYml = require('./buildFile');
-const serviceProps = require('./serviceProps.json');
+const serviceProps = require('./compose-data.json').serviceProps;
 
 var questions = [
   {

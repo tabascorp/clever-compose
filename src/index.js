@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const cleverService = require('./clever-services');
+const composeData = require('./compose-data.json');
 
 var questions = [
   {
@@ -7,9 +8,10 @@ var questions = [
     name: 'composeVersion',
     message: 'Which version of docker-compose you want to use?',
     validate: function (value) {
-        var choices = ['1', '1.0', '2', '2.0', '2.1','2.2', '2.3', '2.4', '3', '3.0', '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8'];
+        var choices = composeData.versions;
         return choices.indexOf(value) !== -1 || 'Please enter valid docker-compose version';
-    }
+    },
+    default: composeData.versions[composeData.versions.length - 1]
   },
   {
     type: 'input',
@@ -18,43 +20,39 @@ var questions = [
     validate: function (value) {
       if(value <= 0) return 'You need to have at least one service';
       return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
-    }
+    },
+    default: 2
   },
   {
     type: 'checkbox',
     message: 'Select additional components',
     name: 'additionalComponents',
     choices: [
-      {
-        name: 'networks',
-      },
-      {
-        name: 'volumes',
-      },
+      ...composeData.addons.map((item) => {
+        return {
+          name: item
+        };
+      })
     ]
   },
-  {
-    type: 'input',
-    name: 'volumesQuantity',
-    message: 'How many volumes you want to use?',
-    validate: function (value) {
-      if(value <= 0) return 'You need to have at least one volume';
-      return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
-    },
-    when: (answer) => answer.additionalComponents.indexOf('Volumes') !== -1
-  },
-  {
-    type: 'input',
-    name: 'networkQuantity',
-    message: 'How many networks you want to use?',
-    validate: function (value) {
-      if(value <= 0) return 'You need to have at least one network';
-      return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
-    },
-    when: (answer) => answer.additionalComponents.indexOf('Network') !== -1
-  }
+  ...composeData.addons.map((item) => {
+    return {
+      type: 'input',
+      name: `${item}Quantity`,
+      message: `How many ${item} do you want?`,
+      validate: function (value) {
+        if(value <= 0) return 'You need to have at least one';
+        return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
+      },
+      when: (answer) => answer.additionalComponents.indexOf(item) !== -1
+    };
+  })
 ];
 
-inquirer.prompt(questions).then((answers) => {
-  cleverService.selectServiceProps(answers);
-});
+const init = function() {
+  inquirer.prompt(questions).then((answers) => {
+    cleverService.selectServiceProps(answers);
+  });
+}
+
+module.exports = { init };
