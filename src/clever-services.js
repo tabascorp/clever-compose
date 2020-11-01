@@ -1,17 +1,18 @@
 const inquirer = require('inquirer');
-const buildYml = require('./buildFile');
+const buildYml = require('./build-file');
 const serviceProps = require('./compose-data.json').serviceProps;
+const deployQuestions = require('./deployment-questions');
 
 var questions = [
   {
     type: 'input',
-    name: 'serviceName',
+    name: 'service-name',
     message: 'Name your service'
   },
   {
     type: 'checkbox',
     message: 'Select components for your service',
-    name: 'serviceComponents',
+    name: 'service-components',
     choices: [
       ...serviceProps.default.map((item) => {
         return {
@@ -29,19 +30,20 @@ var questions = [
   ...serviceProps.quant.map((item) => {
     return {
       type: 'input',
-      name: `${item}Quantity`,
+      name: `${item}-quantity`,
       message: `How many of these do you want: ${item}`,
       validate: function (value) {
         if(value <= 0) return 'You need to have at least one';
         return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
       },
-      when: (answer) => answer.serviceComponents.indexOf(item) !== -1
+      when: (answer) => answer['service-components'].indexOf(item) !== -1
     };
-  })
+  }),
+  ...deployQuestions
 ];
 
 var selectServiceProps = function(params){
-  var quantity = parseInt(params.servicesQuantity);
+  var quantity = parseInt(params['services-quantity']);
   var count = 1;
   var servicesParams = [];
 
@@ -53,7 +55,6 @@ var selectServiceProps = function(params){
       if (count <= quantity) {
         askQuestion ();
       } else {
-        // TODO select deployment props
         buildYml(servicesParams, params);
       }
     })

@@ -5,7 +5,7 @@ const composeData = require('./compose-data.json');
 var questions = [
   {
     type: 'input',
-    name: 'composeVersion',
+    name: 'compose-version',
     message: 'Which version of docker-compose you want to use?',
     validate: function (value) {
         var choices = composeData.versions;
@@ -15,7 +15,7 @@ var questions = [
   },
   {
     type: 'input',
-    name: 'servicesQuantity',
+    name: 'services-quantity',
     message: 'How many services you want to create?',
     validate: function (value) {
       if(value <= 0) return 'You need to have at least one service';
@@ -26,7 +26,7 @@ var questions = [
   {
     type: 'checkbox',
     message: 'Select additional components',
-    name: 'additionalComponents',
+    name: 'additional-components',
     choices: [
       ...composeData.addons.map((item) => {
         return {
@@ -38,13 +38,13 @@ var questions = [
   ...composeData.addons.map((item) => {
     return {
       type: 'input',
-      name: `${item}Quantity`,
+      name: `${item}-quantity`,
       message: `How many ${item} do you want?`,
       validate: function (value) {
         if(value <= 0) return 'You need to have at least one';
         return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
       },
-      when: (answer) => answer.additionalComponents.indexOf(item) !== -1
+      when: (answer) => answer['additional-components'].indexOf(item) !== -1
     };
   })
 ];
