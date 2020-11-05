@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const buildYml = require('./build-file');
-const serviceProps = require('./compose-data.json').serviceProps;
+const serviceProps = require('../static/compose-data.json').serviceProps;
 const deployQuestions = require('./deployment-questions');
 
 var questions = [
@@ -33,7 +33,7 @@ var questions = [
       name: `${item}-quantity`,
       message: `How many of these do you want: ${item}`,
       validate: function (value) {
-        if(value <= 0) return 'You need to have at least one';
+        if (value <= 0) return 'You need to have at least one';
         return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
       },
       when: (answer) => answer['service-components'].indexOf(item) !== -1
@@ -42,7 +42,7 @@ var questions = [
   ...deployQuestions
 ];
 
-var selectServiceProps = function(params){
+var selectServiceProps = function (params) {
   var quantity = parseInt(params['services-quantity']);
   var count = 1;
   var servicesParams = [];
@@ -53,7 +53,7 @@ var selectServiceProps = function(params){
       servicesParams.push(response);
       count++;
       if (count <= quantity) {
-        askQuestion ();
+        askQuestion();
       } else {
         buildYml(servicesParams, params);
       }

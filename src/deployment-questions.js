@@ -1,6 +1,6 @@
 
 
-const deployData = require('./compose-data.json').serviceProps.deploy;
+const deployData = require('../static/compose-data.json').serviceProps.deploy;
 
 module.exports = [
   {
