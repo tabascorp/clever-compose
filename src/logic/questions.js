@@ -1,5 +1,5 @@
-import { versions, addons, serviceProps } from '../../../static/compose-data.json'
-import { validateInt } from "../validators";
+import { versions, addons, serviceProps } from '../../static/compose-data.json'
+import { validateInt } from "./validators";
 
 const deployData = serviceProps.deploy;
 const buildData = serviceProps.build;
