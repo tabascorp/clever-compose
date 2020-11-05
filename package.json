@@ -4,18 +4,15 @@
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
   "main": "src/index.js",
   "bin": {
-    "clever-compose": "bin/clever-compose"
+    "clever-compose": "build/app.js"
   },
   "scripts": {
     "test": "test",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "build": "babel src -d build",
+    "dev": "nodemon --exec babel-node -- ./src/app.js"
   },
-  "keywords": [
-    "cli",
-    "docker-compose",
-    "clever-compose",
-    "template"
-  ],
+  "keywords": ["cli", "docker-compose", "clever-compose", "template"],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/tabascorp/clever-compose.git"
@@ -31,6 +28,11 @@
     "js-yaml": "^3.14.0"
   },
   "devDependencies": {
-    "eslint": "^7.12.1"
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.1",
+    "eslint": "^7.12.1",
+    "nodemon": "^2.0.6"
   }
 }
