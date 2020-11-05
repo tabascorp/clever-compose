@@ -12,7 +12,12 @@
     "build": "babel src -d build",
     "dev": "nodemon --exec babel-node -- ./src/app.js"
   },
-  "keywords": ["cli", "docker-compose", "clever-compose", "template"],
+  "keywords": [
+    "cli",
+    "docker-compose",
+    "clever-compose",
+    "template"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/tabascorp/clever-compose.git"

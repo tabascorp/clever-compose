@@ -1,10 +1,7 @@
-const inquirer = require('inquirer')
-
-const buildYml = require('./build-file')
-
-const serviceProps = require('../../static/compose-data.json').serviceProps
-
-const deployQuestions = require('./deployment-questions')
+import { prompt } from 'inquirer'
+import buildYml from './build-file'
+import { serviceProps } from '../../static/compose-data.json'
+import deployQuestions from './deployment-questions'
 
 var questions = [
   {
@@ -47,14 +44,14 @@ var questions = [
   ...deployQuestions
 ]
 
-var selectServiceProps = function (params) {
-  var quantity = parseInt(params['services-quantity'])
-  var count = 1
-  var servicesParams = []
+export function selectServiceProps (params) {
+  const quantity = parseInt(params['services-quantity'])
+  let count = 1
+  const servicesParams = []
 
   const askQuestion = () => {
     console.log(`\n Set information about ${count} service`)
-    inquirer.prompt(questions).then(response => {
+    prompt(questions).then(response => {
       servicesParams.push(response)
       count++
 
@@ -67,8 +64,4 @@ var selectServiceProps = function (params) {
   }
 
   askQuestion()
-}
-
-module.exports = {
-  selectServiceProps
 }
