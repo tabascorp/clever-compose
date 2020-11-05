@@ -3,4 +3,4 @@ const validateInt = function (value) {
   return Number.isInteger(parseFloat(value)) || 'Please enter an int number';
 }
 
-module.exports = { validateInt }
+export default () => { validateInt }
