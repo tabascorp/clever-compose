@@ -3,6 +3,7 @@
   "addons": [ "networks", "volumes" ],
   "serviceProps": {
     "default": [
+      "cgroup_parent",
       "command",
       "container_name",
       "build",
@@ -18,7 +19,9 @@
       "links",
       "networks",
       "ports",
-      "volumes"
+      "volumes",
+      "cap_add",
+      "cap_drop"
     ],
     "deploy": {
       "default": [
@@ -28,12 +31,17 @@
       ],
       "extra": [
         "update_config",
+        "rollback_config",
         "restart_policy",
         "placement"
       ],
       "update_config": [
         "parallelism",
-        "delay"
+        "delay",
+        "failure_action",
+        "monitor",
+        "max_failure_ratio",
+        "order"
       ],
       "restart_policy": [
         "condition",
@@ -44,7 +52,36 @@
       "placement": [
         "max_replicas_per_node",
         "constraints"
+      ],
+      "rollback_config": [
+        "parallelism",
+        "delay",
+        "failure_action",
+        "monitor",
+        "max_failure_ratio",
+        "order"
+      ]
+    },
+    "build": {
+      "default": [
+        "args",
+        "cache_from",
+        "context",
+        "dockerfile",
+        "labels",
+        "network",
+        "shm_size",
+        "target"
+      ],
+      "quant": [
+        "args",
+        "cache_from",
+        "labels"
       ]
     }
+  },
+  "listOfOptions": {
+    "restart": ["no", "always", "on-failure", "unless-stopped"],
+    "failure_action": ["pause", "continue"]
   }
 }
