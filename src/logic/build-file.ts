@@ -1,17 +1,16 @@
-var fs = require('fs');
-const yml = require('js-yaml');
-
+import { writeFile } from "fs";
+import { safeDump } from "js-yaml";
 import { listOfOptions, serviceProps } from "../../static/compose-data.json";
 
 const ph = "~~~~~~~~";
-var quantities = {};
+let quantities = {};
 
-export function buildYml (services, serviceInfo) {
-  var composeJson = generateComposeJson(services, serviceInfo);
+export const buildYml = (services:string[], serviceInfo:any):void => {
+  const composeJson = generateComposeJson(services, serviceInfo);
+  
+  const composeYml = safeDump(composeJson, {skipInvalid: true});
 
-  var composeYml = yml.safeDump(composeJson);
-
-  fs.writeFile("docker-compose.yml", composeYml, function (err) {
+  writeFile("docker-compose.yml", composeYml, function (err) {
     if (err) {
       return console.log(err);
     }
@@ -20,7 +19,7 @@ export function buildYml (services, serviceInfo) {
 }
 
 const generateComposeJson = function (services, serviceInfo) {
-  var composeJson = { version: serviceInfo['compose-version'], services: {} };
+  const composeJson = { version: serviceInfo['compose-version'], services: {} };
 
   if (serviceInfo['additional-components']) {
     serviceInfo['additional-components'].forEach((item) => {
@@ -40,7 +39,7 @@ const generateComposeJson = function (services, serviceInfo) {
  * Build json for each service
  */
 const buildServiceJson = function (service) {
-  var serviceJson = {};
+  const serviceJson = {};
 
   service['components'].forEach(component => {
     switch (component) {
@@ -66,7 +65,7 @@ const buildServiceJson = function (service) {
 const buildBuildJson = function (service) {
   if(service['build-options'].length === 0) return getComponentValue('build');
 
-  var buildJson = {};
+  const buildJson = {};
 
   service['build-options'].forEach(buildComponent => {
     buildJson[buildComponent] = getComponentValue(buildComponent);
@@ -79,10 +78,10 @@ const buildBuildJson = function (service) {
  * Builds json for `deploy` component in service if user selected it
  */
 const buildDeployJson = function(service) {
-  var deployJson = {};
+  const deployJson = {};
   
   service['deploy-options'].forEach(deployComponent => {
-    var deployOptions = service[`${deployComponent}-deploy-options`];
+    const deployOptions = service[`${deployComponent}-deploy-options`];
 
     if (deployOptions !== undefined) {
       deployJson[deployComponent] = {};

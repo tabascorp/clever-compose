@@ -1,14 +1,14 @@
-import { prompt } from 'inquirer'
-import { composeQuestions, serviceQuestions} from './questions/index'
+import { prompt } from "inquirer";
+import { composeQuestions, serviceQuestions } from './questions'
 import { buildYml } from "./build-file"
 
-export default () => prompt(composeQuestions)
+export default (): Promise<void> => prompt(composeQuestions)
   .then(answers => selectServiceProps(answers))
 
 const selectServiceProps = (params) => {
-  var quantity = parseInt(params['services-quantity'])
-  var count = 1
-  var servicesParams = []
+  const quantity: number = parseInt(params['services-quantity'])
+  const servicesParams = []
+  let count = 1
 
   const askQuestion = () => {
     console.log(`\n Set information about ${count} service`)

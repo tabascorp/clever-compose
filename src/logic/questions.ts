@@ -1,18 +1,15 @@
 import { versions, addons, serviceProps } from '../../static/compose-data.json'
-import { validateInt } from "./validators"
+import { validateInt, validateIndexOf } from "./validators"
 
 const deployData = serviceProps.deploy
 const buildData = serviceProps.build
 
-const composeQuestions = [
+export const composeQuestions = [
   {
     type: 'input',
     name: 'compose-version',
     message: 'Which version of docker-compose you want to use?',
-    validate: function (value) {
-      var choices = versions;
-      return choices.indexOf(value) !== -1 || 'Please enter valid docker-compose version';
-    },
+    validate: validateIndexOf(versions, 'Please enter valid docker-compose version'),
     default: versions[versions.length - 1]
   },
   {
@@ -85,7 +82,7 @@ const buildQuestions = [
   })
 ];
 
-const serviceQuestions = [
+export const serviceQuestions = [
   {
     type: 'input',
     name: 'name',
@@ -110,5 +107,3 @@ const serviceQuestions = [
   ...buildQuestions,
   ...deployQuestions
 ];
-
-module.exports = { composeQuestions, serviceQuestions }

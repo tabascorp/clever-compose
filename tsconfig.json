@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "outDir": "./build",
+        "allowJs": true,
+        "module": "commonJS",
+        "moduleResolution": "node",
+        "resolveJsonModule": true
+    },
+    "include": ["./src/**/*"],
+}
