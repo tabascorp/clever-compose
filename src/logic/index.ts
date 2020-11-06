@@ -1,6 +1,6 @@
 import { prompt } from 'inquirer';
 import { composeQuestions, serviceQuestions } from './questions';
-import buildYml from './build-file';
+import buildYml from './buildFile';
 
 const selectServiceProps = (params) => {
   const quantity: number = parseInt(params['services-quantity'], 10);

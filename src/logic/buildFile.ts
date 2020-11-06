@@ -1,7 +1,7 @@
 import { writeFile } from 'fs';
 import { safeDump } from 'js-yaml';
 import { listOfOptions, serviceProps } from '../../static/compose-data.json';
-import Compose from '../models/Compose';
+import Compose from '../models/compose';
 
 const ph = '~~~~~~~~';
 let quantities = {};
