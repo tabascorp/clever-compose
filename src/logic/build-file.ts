@@ -1,56 +1,110 @@
-import { writeFile } from "fs";
-import { safeDump } from "js-yaml";
-import { listOfOptions, serviceProps } from "../../static/compose-data.json";
+import { writeFile } from 'fs';
+import { safeDump } from 'js-yaml';
+import { listOfOptions, serviceProps } from '../../static/compose-data.json';
+import Compose from '../models/Compose';
 
-const ph = "~~~~~~~~";
+const ph = '~~~~~~~~';
 let quantities = {};
 
-export const buildYml = (services:string[], serviceInfo:any):void => {
-  const composeJson = generateComposeJson(services, serviceInfo);
-  
-  const composeYml = safeDump(composeJson, {skipInvalid: true});
+/**
+ * 1. Clear global `quantities`
+ * 2. Determine if any component in service has multiple values
+ * 3. If yes: It will add components with number of values to `quantities`
+ */
+const fillQuantities = (service) => {
+  quantities = {};
 
-  writeFile("docker-compose.yml", composeYml, function (err) {
-    if (err) {
-      return console.log(err);
+  serviceProps.quant.forEach((quantComponent) => {
+    if (service.components.indexOf(quantComponent) !== -1) {
+      quantities[quantComponent] = parseInt(service[`${quantComponent}-quantity`], 10);
     }
-    console.log("The file was saved!");
   });
-}
 
-const generateComposeJson = function (services, serviceInfo) {
-  const composeJson = { version: serviceInfo['compose-version'], services: {} };
+  serviceProps.build.quant.forEach((buildQuantComponent) => {
+    if (service[`${buildQuantComponent}-quantity`] !== undefined) {
+      quantities[buildQuantComponent] = parseInt(service[`${buildQuantComponent}-quantity`], 10);
+    }
+  });
+};
 
-  if (serviceInfo['additional-components']) {
-    serviceInfo['additional-components'].forEach((item) => {
-      composeJson[item] = new Array(parseInt(serviceInfo[`${item}-quantity`])).fill(`${ph}:`);
-    });
+/**
+ * Builds json for `deploy` component in service if user selected it
+ */
+const buildDeployJson = (service) => {
+  const deployJson = {};
+
+  service['deploy-options'].forEach((deployComponent: string) => {
+    const deployOptions = service[`${deployComponent}-deploy-options`];
+
+    if (deployOptions !== undefined) {
+      deployJson[deployComponent] = {};
+
+      deployOptions.forEach((innerComponent) => {
+        deployJson[deployComponent][innerComponent] = ph;
+      });
+    } else {
+      deployJson[deployComponent] = ph;
+    }
+  });
+
+  return deployJson;
+};
+
+/**
+ * Checks the value type for a component in service and return its value
+ */
+const getComponentValue = (propName) => {
+  if (quantities[propName]) {
+    switch (propName) {
+      case 'volumes':
+      case 'ports':
+        return new Array(quantities[propName]).fill(`${ph}:${ph}`);
+
+      case 'env':
+      case 'args':
+        return new Array(quantities[propName]).fill(`KEY=${ph}`);
+
+      default:
+        return new Array(quantities[propName]).fill(ph);
+    }
+  } else if (listOfOptions[propName] !== undefined) {
+    return listOfOptions[propName].join('|');
+  } else {
+    return ph;
   }
+};
 
-  services.forEach((service) => {
-    fillQuantities(service);
-    composeJson.services[service['name']] = buildServiceJson(service);
+/**
+ * Builds json for `build` component in service if user selected it
+ */
+const buildBuildJson = (service) => {
+  if (service['build-options'].length === 0) return getComponentValue('build');
+
+  const buildJson = {};
+
+  service['build-options'].forEach((buildComponent) => {
+    buildJson[buildComponent] = getComponentValue(buildComponent);
   });
 
-  return composeJson;
+  return buildJson;
 };
 
 /**
  * Build json for each service
  */
-const buildServiceJson = function (service) {
+const buildServiceJson = (service: any) => {
   const serviceJson = {};
 
-  service['components'].forEach(component => {
+  service.components.forEach((component) => {
     switch (component) {
       case 'deploy':
         serviceJson[component] = buildDeployJson(service);
         break;
-      
+
       case 'build':
         serviceJson[component] = buildBuildJson(service);
         break;
-  
+
       default:
         serviceJson[component] = getComponentValue(component);
     }
@@ -60,89 +114,52 @@ const buildServiceJson = function (service) {
 };
 
 /**
- * Builds json for `build` component in service if user selected it
+ * Iterates over each service and returns objects with all services as json
  */
-const buildBuildJson = function (service) {
-  if(service['build-options'].length === 0) return getComponentValue('build');
+const buildServices = (services) => {
+  const servicesJson = {};
 
-  const buildJson = {};
-
-  service['build-options'].forEach(buildComponent => {
-    buildJson[buildComponent] = getComponentValue(buildComponent);
+  services.forEach((service) => {
+    fillQuantities(service);
+    servicesJson[service.name] = buildServiceJson(service);
   });
 
-  return buildJson;
+  return servicesJson;
 };
 
 /**
- * Builds json for `deploy` component in service if user selected it
+ * Returns additional components ('networks','volumes') with values for docker-compose
  */
-const buildDeployJson = function(service) {
-  const deployJson = {};
-  
-  service['deploy-options'].forEach(deployComponent => {
-    const deployOptions = service[`${deployComponent}-deploy-options`];
+const buildAdditionalComponents = (serviceInfo: Record<string, any>): Record<string, any> => {
+  const addons = {};
 
-    if (deployOptions !== undefined) {
-      deployJson[deployComponent] = {};
-
-      deployOptions.forEach(innerComponent => {
-        deployJson[deployComponent][innerComponent] = ph;
-      })
-    } else {
-      deployJson[deployComponent] = ph;
-    }
-  });
-
-  return deployJson;
-}
-
-/**
- * Checks the value type for a component in service and return its value
- */
-const getComponentValue = function (propName) {
-  if (quantities[propName]) {
-
-    switch (propName) {
-      case 'volumes':
-      case 'ports':
-        return new Array(quantities[propName]).fill(`${ph}:${ph}`);
-  
-      case 'env':
-      case 'args':
-        return new Array(quantities[propName]).fill(`KEY=${ph}`);
-  
-      default:
-        return new Array(quantities[propName]).fill(ph);
-    }
-    
-  } else if (listOfOptions[propName] !== undefined) {
-
-    return listOfOptions[propName].join('|');
-
-  } else {
-
-    return ph;
-
+  if (serviceInfo.additionalComponents) {
+    serviceInfo.additionalComponents
+      .forEach((item: string) => { addons[item] = new Array(parseInt(serviceInfo[`${item}-quantity`], 10)).fill(`${ph}:`); });
   }
+
+  return addons;
 };
 
-/**
- * 1. Clear global `quantities`
- * 2. Determine if any component in service has multiple values
- * 3. If yes: It will add components with number of values to `quantities`
- */
-const fillQuantities = function (service) {
-  quantities = {};
+const generateComposeJson = (services, serviceInfo) => {
+  const servicesJson = buildServices(services);
+  const addons = buildAdditionalComponents(serviceInfo);
 
-  serviceProps.quant.forEach((quantComponent) => {
-    if (service['components'].indexOf(quantComponent) !== -1) {
-      quantities[quantComponent] = parseInt(service[`${quantComponent}-quantity`]);
+  return new Compose(
+    serviceInfo['compose-version'],
+    servicesJson,
+    addons.networks,
+    addons.volumes,
+  );
+};
+
+export default (services:string[], serviceInfo:any): void => {
+  const composeJson = generateComposeJson(services, serviceInfo);
+  const composeYml = safeDump(composeJson, { skipInvalid: true });
+  writeFile('docker-compose.yml', composeYml, (err) => {
+    if (err) {
+      return console.warn(err);
     }
+    return console.log('The file was saved!');
   });
-  serviceProps.build.quant.forEach((buildQuantComponent) => {
-    if (service[`${buildQuantComponent}-quantity`] !== undefined) {
-      quantities[buildQuantComponent] = parseInt(service[`${buildQuantComponent}-quantity`]);
-    }
-  })
-}
+};

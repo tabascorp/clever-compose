@@ -2,15 +2,16 @@
   "name": "clever-compose",
   "version": "0.1.1",
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
-  "main": "src/index.js",
+  "main": "src/app.ts",
   "bin": {
     "clever-compose": "build/src/app.js"
   },
   "scripts": {
     "test": "test",
-    "lint": "eslint src/",
+    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "fix": "eslint --fix src/",
     "build": "tsc",
-    "dev": "nodemon --exec babel-node -- ./src/app.js"
+    "dev": "nodemon"
   },
   "keywords": [
     "cli",
@@ -42,7 +43,11 @@
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.6",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
 }
