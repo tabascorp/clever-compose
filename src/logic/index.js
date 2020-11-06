@@ -1,14 +1,11 @@
 import { prompt } from 'inquirer'
 import { composeQuestions, serviceQuestions} from './questions/index'
-import { buildYml } from "./build-file";
+import { buildYml } from "./build-file"
 
-export default () => {
-  prompt(composeQuestions).then(answers => {
-    selectServiceProps(answers)
-  })
-}
+export default () => prompt(composeQuestions)
+  .then(answers => selectServiceProps(answers))
 
-const selectServiceProps = function (params) {
+const selectServiceProps = (params) => {
   var quantity = parseInt(params['services-quantity'])
   var count = 1
   var servicesParams = []

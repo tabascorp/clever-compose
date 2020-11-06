@@ -1,8 +1,8 @@
 import { versions, addons, serviceProps } from '../../static/compose-data.json'
-import { validateInt } from "./validators";
+import { validateInt } from "./validators"
 
-const deployData = serviceProps.deploy;
-const buildData = serviceProps.build;
+const deployData = serviceProps.deploy
+const buildData = serviceProps.build
 
 const composeQuestions = [
   {
