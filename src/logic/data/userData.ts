@@ -11,17 +11,13 @@ const createSettingsContent = () => ({
   templatesPath: defaultTemplatesPath,
 });
 
-export function loadUserData(): Promise<unknown> {
+export function loadUserData(): Promise<void> {
   if (fs.existsSync(configPath)) {
-    console.log('File exists');
-    return new Promise(() => {});
+    return Promise.resolve();
   }
-
-  console.log('Creating file');
 
   return fs.promises.mkdir((configBaseDir), { recursive: true })
     .then(() => fs.promises.writeFile(configPath, JSON.stringify(createSettingsContent())))
-    .then(() => new Promise(() => console.log('File created')))
     .catch(console.error);
 }
 
