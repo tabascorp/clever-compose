@@ -30,7 +30,6 @@ export async function loadUserData(): Promise<void> {
     return fs.promises.readFile(configPath, { encoding: 'utf8' })
       .then((fileBuffer) => {
         templatesPath = JSON.parse(fileBuffer).templatesPath;
-        console.log(templatesPath);
       });
   }
 
