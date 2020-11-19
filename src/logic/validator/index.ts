@@ -1,4 +1,4 @@
-type Validator = (value: string) => (boolean | string);
+type Validator = (value: string) => boolean | string;
 
 export const validateInt: Validator = (value) => {
   const parsedValue = parseFloat(value);
@@ -7,5 +7,6 @@ export const validateInt: Validator = (value) => {
 };
 
 export const validateIndexOf = (
-  arr: string[], errorMessage: string,
+  arr: string[],
+  errorMessage: string,
 ): Validator => (value: string) => arr.indexOf(value) !== -1 || errorMessage;
