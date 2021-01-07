@@ -9,12 +9,6 @@ const configFileName = 'settings.json';
 const configPath = path.join(configBaseDir, configFileName);
 const defaultTemplatesPath = path.join(os.homedir(), 'clever-compose', 'templates');
 
-let templatesPath;
-
-const createSettingsContent = () => ({
-  templatesPath,
-});
-
 async function askForTemplatePath(): Promise<string> {
   const result = await prompt([{
     type: 'input',
@@ -25,21 +19,15 @@ async function askForTemplatePath(): Promise<string> {
   return result.templatesPath;
 }
 
-export async function loadUserData(): Promise<void> {
+export async function loadUserData(): Promise<string> {
   if (fs.existsSync(configPath)) {
     return fs.promises.readFile(configPath, { encoding: 'utf8' })
-      .then((fileBuffer) => {
-        templatesPath = JSON.parse(fileBuffer).templatesPath;
-      });
+      .then((fileBuffer) => JSON.parse(fileBuffer).templatesPath);
   }
 
-  templatesPath = await askForTemplatePath();
+  const templatesPath = await askForTemplatePath();
 
   await fs.promises.mkdir((configBaseDir), { recursive: true });
-  return fs.promises.writeFile(configPath, JSON.stringify(createSettingsContent()))
-    .catch(console.error);
+  return fs.promises.writeFile(configPath, JSON.stringify({ templatesPath }))
+    .then(() => templatesPath);
 }
-
-export default {
-  templatesPath,
-};
