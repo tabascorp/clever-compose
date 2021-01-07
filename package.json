@@ -4,7 +4,7 @@
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
   "main": "src/app.ts",
   "bin": {
-    "ccg": "build/src/app.js"
+    "clever-compose": "build/src/app.js"
   },
   "scripts": {
     "test:unit": "npx mocha -r ts-node/register \"src/**/*.test.ts\"",
@@ -13,7 +13,8 @@
     "lint:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run lint\"",
     "fix": "eslint --fix src/",
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "dev:once": "ts-node \"src/app.ts\""
   },
   "keywords": [
     "cli",
@@ -33,6 +34,7 @@
   "homepage": "https://github.com/tabascorp/clever-compose#readme",
   "dependencies": {
     "@types/inquirer": "^7.3.1",
+    "commander": "^6.2.1",
     "inquirer": "^7.3.3",
     "js-yaml": "^3.14.0"
   },
