@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import buildAdditionalComponents from './additionalComponentsBuilder';
-import ph from './constants';
+import { placeholder } from '../config/constants';
 
 const additionalComponentsInfo = {
   additionalComponents: [
@@ -14,16 +14,16 @@ const additionalComponentsInfo = {
 
 const builtAdditionalComponents = {
   networks: [
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
   ],
   volumes: [
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
+    `${placeholder}:`,
   ],
 };
 

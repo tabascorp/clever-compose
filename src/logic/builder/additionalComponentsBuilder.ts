@@ -1,4 +1,4 @@
-import ph from './constants';
+import { placeholder } from '../config/constants';
 
 function parseServiceInfoNumbers(serviceInfo: Record<string, any>): Record<string, any> {
   const result = {};
@@ -20,11 +20,11 @@ const processAdditionalComponents = (serviceInfo) => serviceInfo.additionalCompo
   .filter((item: string) => getItemQuantity(serviceInfo, item) > 0)
   .reduce((obj: Record<string, any>, item: string) => {
     const newObj = obj;
-    newObj[item] = new Array(getItemQuantity(serviceInfo, item)).fill(`${ph}:`);
+    newObj[item] = new Array(getItemQuantity(serviceInfo, item)).fill(`${placeholder}:`);
     return newObj;
   }, {});
 
-export default (serviceInfo: Record<string, any>): Record<string, any> => {
+function additionalServiceComponentsToJson(serviceInfo: Record<string, any>): Record<string, any> {
   let addons = {};
 
   const parsedServiceInfo = parseServiceInfoNumbers(serviceInfo);
@@ -34,4 +34,6 @@ export default (serviceInfo: Record<string, any>): Record<string, any> => {
   }
 
   return addons;
-};
+}
+
+export default additionalServiceComponentsToJson;

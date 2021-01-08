@@ -1,12 +1,20 @@
+import buildQuestions from '../build/buildQuestions';
+import deployQuestions from '../deploy/deployQuestions';
+import { validateInt } from '../validator';
 import {
   serviceProps,
 } from '../../../static/compose-data.json';
-import { validateInt } from '../validator';
 
-import buildQuestions from './buildQuestions';
-import deployQuestions from './deployQuestions';
+export function serviceExtractionQuestion(choices: string[]) {
+  return {
+    type: 'checkbox',
+    message: 'Select services to extract',
+    name: 'services',
+    choices,
+  };
+}
 
-export default [
+export const serviceCreationQuestions = [
   {
     type: 'input',
     name: 'name',

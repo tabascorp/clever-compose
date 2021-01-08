@@ -24,7 +24,7 @@ const buildServiceJson = (service: any, quantities: any) => {
   return serviceJson;
 };
 
-export default (services) => {
+export default function servicesToJson(services) {
   const servicesJson = {};
 
   services.forEach((service) => {
@@ -33,4 +33,4 @@ export default (services) => {
   });
 
   return servicesJson;
-};
+}

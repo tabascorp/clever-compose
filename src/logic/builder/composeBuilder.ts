@@ -1,10 +1,10 @@
-import Compose from '../../models/compose';
-import buildServices from './serviceBuilder';
-import buildAdditionalComponents from './additionalComponentsBuilder';
+import Compose from '../compose';
+import servicesToJson from './serviceBuilder';
+import additionalServiceComponentsToJson from './additionalComponentsBuilder';
 
-export default (services, serviceInfo) => {
-  const servicesJson = buildServices(services);
-  const addons = buildAdditionalComponents(serviceInfo);
+export default function createCompose(servicesData, serviceInfo) {
+  const servicesJson = servicesToJson(servicesData);
+  const addons = additionalServiceComponentsToJson(serviceInfo);
 
   return new Compose(
     serviceInfo['compose-version'],
@@ -12,4 +12,4 @@ export default (services, serviceInfo) => {
     addons.networks,
     addons.volumes,
   );
-};
+}

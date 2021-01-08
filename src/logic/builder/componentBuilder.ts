@@ -1,23 +1,23 @@
 import { listOfOptions } from '../../../static/compose-data.json';
-import ph from './constants';
+import { placeholder } from '../config/constants';
 
 export default (propName, quantities) => {
   if (quantities[propName]) {
     switch (propName) {
       case 'volumes':
       case 'ports':
-        return new Array(quantities[propName]).fill(`${ph}:${ph}`);
+        return new Array(quantities[propName]).fill(`${placeholder}:${placeholder}`);
 
       case 'env':
       case 'args':
-        return new Array(quantities[propName]).fill(`KEY=${ph}`);
+        return new Array(quantities[propName]).fill(`KEY=${placeholder}`);
 
       default:
-        return new Array(quantities[propName]).fill(ph);
+        return new Array(quantities[propName]).fill(placeholder);
     }
   } else if (listOfOptions[propName] !== undefined) {
     return listOfOptions[propName].join('|');
   } else {
-    return ph;
+    return placeholder;
   }
 };

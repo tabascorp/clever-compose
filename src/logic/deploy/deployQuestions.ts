@@ -11,7 +11,7 @@ export default [
     message: 'Select deploy options',
     choices: deployData.default.concat(deployData.extra),
     pageSize: deployData.default.concat(deployData.extra).length,
-    when: (answer) => answer.components.indexOf('deploy') !== -1,
+    when: (answer: Record<string, any>): boolean => answer.components.indexOf('deploy') !== -1,
   },
   ...deployData.extra.map((item) => ({
     type: 'checkbox',

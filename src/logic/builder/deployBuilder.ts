@@ -1,9 +1,9 @@
-import ph from './constants';
+import { placeholder } from '../config/constants';
 
 function buildDeployOptionsJson(deployOptions: any) {
   return deployOptions.reduce((acc, innerComponent) => ({
     ...acc,
-    [innerComponent]: ph,
+    [innerComponent]: placeholder,
   }), {});
 }
 
@@ -13,6 +13,6 @@ export default (service: Record<string, any>) => service['deploy-options']
 
     return {
       ...acc,
-      [deployComponent]: deployOptions ? buildDeployOptionsJson(deployOptions) : ph,
+      [deployComponent]: deployOptions ? buildDeployOptionsJson(deployOptions) : placeholder,
     };
   }, {});
