@@ -6,3 +6,5 @@ export default class Compose {
     readonly networks: Record<string, any>,
   ) { }
 }
+
+export type ComposeData = Record<string, any>;

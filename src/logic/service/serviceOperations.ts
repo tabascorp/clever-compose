@@ -1,11 +1,14 @@
 import { prompt } from 'inquirer';
 import { serviceCreationQuestions } from './serviceQuestions';
 import getServiceQuantities from '../quantity/quantityOperations';
-import buildDeployJson from '../deploy/deployOperations';
 import createBuild from '../build/buildOperations';
-import getComponentValue from '../component/componentOperations';
+import { Service, ServiceData, Services } from '.';
+import createDeploy from '../deploy/deployOperations';
+import createComponent from '../component/componentOperations';
+import { Quantities } from '../quantity';
+import { ComposeData } from '../compose';
 
-export async function askForServiceData(composeData: Record<string, any>) {
+export async function askForServiceData(composeData: ComposeData) {
   const quantity = parseInt(composeData['services-quantity'], 10);
   const serviceData = [];
 
@@ -19,33 +22,33 @@ export async function askForServiceData(composeData: Record<string, any>) {
   return { serviceData, composeData };
 }
 
-const buildServiceJson = (service: any, quantities: any) => {
-  const serviceJson = {};
+function createService(serviceData: ServiceData, quantities: Quantities): Service {
+  const service = {};
 
-  service.components.forEach((component) => {
+  serviceData.components.forEach((component: string) => {
     switch (component) {
       case 'deploy':
-        serviceJson[component] = buildDeployJson(service);
+        service[component] = createDeploy(service);
         break;
 
       case 'build':
-        serviceJson[component] = createBuild(service, quantities);
+        service[component] = createBuild(service, quantities);
         break;
 
       default:
-        serviceJson[component] = getComponentValue(component, quantities);
+        service[component] = createComponent(component, quantities);
     }
   });
 
-  return serviceJson;
-};
+  return service;
+}
 
-export function createServices(services) {
+export function createServices(servicesData: ServiceData[]): Services {
   const servicesJson = {};
 
-  services.forEach((service) => {
-    const quantities = getServiceQuantities(service);
-    servicesJson[service.name] = buildServiceJson(service, quantities);
+  servicesData.forEach((serviceData) => {
+    const quantities = getServiceQuantities(serviceData);
+    servicesJson[serviceData.name] = createService(serviceData, quantities);
   });
 
   return servicesJson;

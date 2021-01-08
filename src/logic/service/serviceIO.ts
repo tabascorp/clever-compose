@@ -4,19 +4,22 @@ import * as path from 'path';
 
 import { prompt } from 'inquirer';
 import { serviceExtractionQuestion } from './serviceQuestions';
+import Compose, { ComposeData } from '../compose';
 
 const templateFile = 'static/template-compose.yml';
 
-function getServiceNames(composeData: Record<string, any>): string[] {
+function getServiceNames(composeData: ComposeData): string[] {
   return Object.keys(composeData.services);
 }
 
 export function saveServiceTemplates(
-  templatePath: string, serviceNames: string[], composeAsJson: Record<string, any>,
+  templatePath: string,
+  serviceNames: string[],
+  compose: Compose,
 ) {
   serviceNames.forEach((service: string) => {
     const foo = readFileSync(templateFile, 'utf8');
-    const composeYml = safeDump(composeAsJson[service], { skipInvalid: true });
+    const composeYml = safeDump(compose[service], { skipInvalid: true });
     const pathToSave = path.join(templatePath, `${service}.yml`);
 
     mkdirSync(templatePath, { recursive: true });

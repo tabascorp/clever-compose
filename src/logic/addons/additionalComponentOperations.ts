@@ -1,36 +1,24 @@
+import { AdditionalComponents } from '.';
+import { ComposeData } from '../compose';
 import { placeholder } from '../config/constants';
 
-function parseServiceInfoNumbers(composeData: Record<string, any>): Record<string, any> {
-  const result = {};
+const getItemQuantity = (composeData: ComposeData, item: string): number => composeData[`${item}-quantity`];
 
-  Object.keys(composeData).forEach((key) => {
-    if (key.endsWith('-quantity')) {
-      result[key] = parseInt(composeData[key], 10);
-    } else {
-      result[key] = composeData[key];
-    }
-  });
-
-  return result;
+function extractAdditionalComponents(composeData: ComposeData): AdditionalComponents {
+  return composeData.additionalComponents
+    .filter((item: string) => getItemQuantity(composeData, item) > 0)
+    .reduce((obj: AdditionalComponents, item: string) => {
+      const newObj = obj;
+      newObj[item] = new Array(getItemQuantity(composeData, item)).fill(`${placeholder}:`);
+      return newObj;
+    }, {});
 }
 
-const getItemQuantity = (composeData: Record<string, any>, item: string): number => composeData[`${item}-quantity`];
-
-const extractAdditionalComponents = (composeData) => composeData.additionalComponents
-  .filter((item: string) => getItemQuantity(composeData, item) > 0)
-  .reduce((obj: Record<string, any>, item: string) => {
-    const newObj = obj;
-    newObj[item] = new Array(getItemQuantity(composeData, item)).fill(`${placeholder}:`);
-    return newObj;
-  }, {});
-
-function createAdditionalComponents(composeData: Record<string, any>): Record<string, any> {
+function createAdditionalComponents(composeData: ComposeData): AdditionalComponents {
   let addons = {};
 
-  const parsedServiceInfo = parseServiceInfoNumbers(composeData);
-
-  if (parsedServiceInfo.additionalComponents) {
-    addons = extractAdditionalComponents(parsedServiceInfo);
+  if (composeData.additionalComponents) {
+    addons = extractAdditionalComponents(composeData);
   }
 
   return addons;
