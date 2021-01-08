@@ -19,7 +19,7 @@ async function askForTemplatePath(): Promise<string> {
   return result.templatesPath;
 }
 
-export async function loadUserData(): Promise<string> {
+export default async function (): Promise<string> {
   if (fs.existsSync(configPath)) {
     return fs.promises.readFile(configPath, { encoding: 'utf8' })
       .then((fileBuffer) => JSON.parse(fileBuffer).templatesPath);

@@ -10,4 +10,10 @@ parserOptions:
   project: "./tsconfig.json"
 plugins:
   - "@typescript-eslint"
-rules: { "no-console": "off", "linebreak-style": "off" }
+rules:
+  {
+    "no-console": "off",
+    "linebreak-style": "off",
+    "func-names": "off",
+    "no-await-in-loop": "off",
+  }
