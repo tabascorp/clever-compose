@@ -1,10 +1,10 @@
-import { prompt } from 'inquirer';
-import composeQuestions from './compose/composeQuestions';
-import createServices from './service/serviceOperations';
-import buildYml from './builder/fileBuilder';
+import { askForServiceData } from './service/serviceOperations';
+import { askForComposeData, processComposeData } from './compose/composeOperations';
+import saveCompose from './compose/composeIO';
 
 export default function run() {
-  prompt(composeQuestions)
-    .then(createServices)
-    .then(({ serviceParams, composeInformation }) => buildYml(serviceParams, composeInformation));
+  askForComposeData()
+    .then(askForServiceData)
+    .then(processComposeData)
+    .then(saveCompose);
 }

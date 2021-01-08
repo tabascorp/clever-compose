@@ -1,7 +1,7 @@
 import { listOfOptions } from '../../../static/compose-data.json';
 import { placeholder } from '../config/constants';
 
-export default (propName, quantities) => {
+export default function createComponent(propName, quantities) {
   if (quantities[propName]) {
     switch (propName) {
       case 'volumes':
@@ -20,4 +20,4 @@ export default (propName, quantities) => {
   } else {
     return placeholder;
   }
-};
+}

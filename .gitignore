@@ -104,5 +104,5 @@ dist
 
 node_modules/
 docker-compose.yml
-build/
+/build/
 .vscode/
