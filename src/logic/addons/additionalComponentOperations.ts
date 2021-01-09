@@ -9,7 +9,7 @@ function extractAdditionalComponents(composeData: ComposeData): AdditionalCompon
     .filter((item: string) => getItemQuantity(composeData, item) > 0)
     .reduce((obj: AdditionalComponents, item: string) => {
       const newObj = obj;
-      newObj[item] = new Array(getItemQuantity(composeData, item)).fill(`${placeholder}:`);
+      newObj[item] = Array.from({ length: getItemQuantity(composeData, item) }, () => `${placeholder}:`);
       return newObj;
     }, {});
 }
