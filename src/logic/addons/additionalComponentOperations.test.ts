@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import createAdditionalComponents from './additionalComponentOperations';
-import { placeholder } from '../config/constants';
+import { generateArrayOfPlaceholdersWithColon } from '../placeholder/placeholderOperations';
 
 const additionalComponentsInfo = {
   additionalComponents: [
@@ -13,18 +13,8 @@ const additionalComponentsInfo = {
 };
 
 const builtAdditionalComponents = {
-  networks: [
-    `${placeholder}:`,
-    `${placeholder}:`,
-    `${placeholder}:`,
-    `${placeholder}:`,
-    `${placeholder}:`,
-  ],
-  volumes: [
-    `${placeholder}:`,
-    `${placeholder}:`,
-    `${placeholder}:`,
-  ],
+  networks: generateArrayOfPlaceholdersWithColon(5),
+  volumes: generateArrayOfPlaceholdersWithColon(3),
 };
 
 describe('Additional Components Builder', () => {

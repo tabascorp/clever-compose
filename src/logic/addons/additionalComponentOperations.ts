@@ -1,6 +1,6 @@
 import { AdditionalComponents } from '.';
 import { ComposeData } from '../compose';
-import { placeholder } from '../config/constants';
+import { generateArrayOfPlaceholdersWithColon } from '../placeholder/placeholderOperations';
 
 const getItemQuantity = (composeData: ComposeData, item: string): number => composeData[`${item}-quantity`];
 
@@ -9,7 +9,7 @@ function extractAdditionalComponents(composeData: ComposeData): AdditionalCompon
     .filter((item: string) => getItemQuantity(composeData, item) > 0)
     .reduce((obj: AdditionalComponents, item: string) => {
       const newObj = obj;
-      newObj[item] = Array.from({ length: getItemQuantity(composeData, item) }, () => `${placeholder}:`);
+      newObj[item] = generateArrayOfPlaceholdersWithColon(getItemQuantity(composeData, item));
       return newObj;
     }, {});
 }
