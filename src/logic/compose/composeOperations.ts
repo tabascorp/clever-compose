@@ -18,8 +18,8 @@ export function createCompose(
   return new Compose(
     composeData['compose-version'],
     services,
-    additionalComponents.networks,
     additionalComponents.volumes,
+    additionalComponents.networks,
   );
 }
 

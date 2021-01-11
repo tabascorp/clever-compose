@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import createAdditionalComponents from './additionalComponentOperations';
-import { generateArrayOfPlaceholdersWithColon } from '../placeholder/placeholderOperations';
+import { generateArrayOfPlaceholdersWithColon, generateArrayOfMapPlaceholders } from '../placeholder/placeholderOperations';
 
 const additionalComponentsInfo = {
-  additionalComponents: [
+  'additional-components': [
     'networks',
     'volumes',
   ],
@@ -14,7 +14,7 @@ const additionalComponentsInfo = {
 
 const builtAdditionalComponents = {
   networks: generateArrayOfPlaceholdersWithColon(5),
-  volumes: generateArrayOfPlaceholdersWithColon(3),
+  volumes: generateArrayOfMapPlaceholders(3),
 };
 
 describe('Additional Components Builder', () => {

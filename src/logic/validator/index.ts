@@ -9,3 +9,8 @@ export const validateInt: Validator = function (value) {
 export function validateIndexOf(arr: string[], errorMessage: string): Validator {
   return (value: string) => arr.indexOf(value) !== -1 || errorMessage;
 }
+
+export const validateAtLeastOneOption: Validator = function (value) {
+  const parsedValue = value.length <= 0;
+  return !parsedValue || 'Please select at least one option';
+};

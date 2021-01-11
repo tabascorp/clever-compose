@@ -1,6 +1,6 @@
-import buildQuestions from '../build/buildQuestions';
-import deployQuestions from '../deploy/deployQuestions';
-import { validateInt } from '../validator';
+import buildQuestions from '../serviceComponents/build/buildQuestions';
+import deployQuestions from '../serviceComponents/deploy/deployQuestions';
+import { validateInt, validateAtLeastOneOption } from '../validator';
 import {
   serviceProps,
 } from '../../../static/compose-data.json';
@@ -26,6 +26,7 @@ export const serviceCreationQuestions = [
     name: 'components',
     choices: serviceProps.default.concat(serviceProps.quant),
     pageSize: serviceProps.default.length + serviceProps.quant.length,
+    validate: validateAtLeastOneOption,
   },
   ...serviceProps.quant.map((item) => ({
     type: 'input',

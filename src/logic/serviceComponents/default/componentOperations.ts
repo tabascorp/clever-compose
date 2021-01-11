@@ -1,8 +1,8 @@
 import { Component } from '.';
-import { listOfOptions } from '../../../static/compose-data.json';
-import { placeholder } from '../config/constants';
-import { generateArrayOfMapPlaceholders, generateArrayOfKeyPlaceholders, generateArrayOfPlaceholders } from '../placeholder/placeholderOperations';
-import { Quantities } from '../quantity';
+import { listOfOptions } from '../../../../static/compose-data.json';
+import { placeholder } from '../../config/constants';
+import { generateArrayOfMapPlaceholders, generateArrayOfKeyPlaceholders, generateArrayOfPlaceholders } from '../../placeholder/placeholderOperations';
+import { Quantities } from '../../quantity';
 
 export default function createComponent(propName: string, quantities: Quantities): Component {
   if (quantities[propName]) {

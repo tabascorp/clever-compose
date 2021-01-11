@@ -1,10 +1,10 @@
 import { prompt } from 'inquirer';
 import { serviceCreationQuestions } from './serviceQuestions';
 import getServiceQuantities from '../quantity/quantityOperations';
-import createBuild from '../build/buildOperations';
+import createBuild from '../serviceComponents/build/buildOperations';
 import { Service, ServiceData, Services } from '.';
-import createDeploy from '../deploy/deployOperations';
-import createComponent from '../component/componentOperations';
+import createDeploy from '../serviceComponents/deploy/deployOperations';
+import createComponent from '../serviceComponents/default/componentOperations';
 import { Quantities } from '../quantity';
 import { ComposeData } from '../compose';
 
@@ -28,11 +28,11 @@ function createService(serviceData: ServiceData, quantities: Quantities): Servic
   serviceData.components.forEach((component: string) => {
     switch (component) {
       case 'deploy':
-        service[component] = createDeploy(service);
+        service[component] = createDeploy(serviceData);
         break;
 
       case 'build':
-        service[component] = createBuild(service, quantities);
+        service[component] = createBuild(serviceData, quantities);
         break;
 
       default:
