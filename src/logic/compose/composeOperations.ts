@@ -1,7 +1,6 @@
 import { prompt } from 'inquirer';
 import composeQuestions from './composeQuestions';
 import Compose, { ComposeData } from '.';
-import { createServices } from '../service/serviceOperations';
 import createAdditionalComponents from '../addons/additionalComponentOperations';
 import { Services } from '../service';
 import { AdditionalComponents } from '../addons';
@@ -37,9 +36,8 @@ export function preprocessComposeData(composeData: ComposeData): ComposeData {
   return result;
 }
 
-export function processComposeData({ serviceData, composeData }) {
+export function processComposeData({ services, composeData }) {
   const composeDataWithQuantities = preprocessComposeData(composeData);
-  const services = createServices(serviceData);
   const additionalComponents = createAdditionalComponents(composeDataWithQuantities);
   return createCompose(services, additionalComponents, composeDataWithQuantities);
 }

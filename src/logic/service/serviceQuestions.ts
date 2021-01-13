@@ -4,6 +4,7 @@ import { validateInt, validateAtLeastOneOption } from '../validator';
 import {
   serviceProps,
 } from '../../../static/compose-data.json';
+// import { Answer } from '../common';
 
 export function serviceExtractionQuestion(choices: string[]) {
   return {
@@ -38,3 +39,21 @@ export const serviceCreationQuestions = [
   ...buildQuestions,
   ...deployQuestions,
 ];
+
+export const serviceUseTemplateQuestion = [
+  {
+    type: 'confirm',
+    name: 'useTemplate',
+    message: 'Do you want to use predefined template for this service?',
+  },
+];
+
+export function loadServiceTemplateNameQuestion(possibleTemplates: string[]): Record<string, any> {
+  return {
+    type: 'list',
+    name: 'serviceTemplateName',
+    message: 'Choose template you want to use',
+    choices: possibleTemplates,
+    pageSize: 5,
+  };
+}

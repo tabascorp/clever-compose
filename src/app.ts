@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import Application from './logic/application';
+import run from './logic';
 
-new Application().run();
+run();
