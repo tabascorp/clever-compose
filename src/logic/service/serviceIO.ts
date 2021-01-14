@@ -52,9 +52,8 @@ export async function listUserServiceTemplateNames(): Promise<string[]> {
   return userTemplates;
 }
 
-export async function loadService(serviceTemplateName: string): Promise<Record<string, any>> {
+export async function loadServiceString(serviceTemplateName: string): Promise<string> {
   const templatePath = await loadUserConfig();
   const pathToTemplate = path.join(templatePath, serviceTemplateName);
-  const serviceAsJson = load(readFileSync(pathToTemplate, 'utf8'));
-  return serviceAsJson;
+  return readFileSync(pathToTemplate, 'utf8');
 }

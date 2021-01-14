@@ -48,6 +48,24 @@ export const serviceUseTemplateQuestion = [
   },
 ];
 
+export function getServiceVariableQuestions(
+  foundVariables: Record<string, any>,
+): Record<string, any>[] {
+  const questions = [];
+
+  for (let i = 0; i < foundVariables.length; i += 1) {
+    const question = {
+      type: 'input',
+      name: foundVariables[i],
+      message: `Set (${i + 1}/${foundVariables.length}) value for '${foundVariables[i]}':`,
+    };
+
+    questions.push(question);
+  }
+
+  return questions;
+}
+
 export function loadServiceTemplateNameQuestion(possibleTemplates: string[]): Record<string, any> {
   return {
     type: 'list',
