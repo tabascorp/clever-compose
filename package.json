@@ -1,6 +1,6 @@
 {
   "name": "clever-compose",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
   "main": "src/app.ts",
   "bin": {
