@@ -3,6 +3,7 @@ import {
   writeFile,
   mkdirSync,
   readdirSync,
+  existsSync,
 } from 'fs';
 import { safeDump, load } from 'js-yaml';
 import * as path from 'path';
@@ -48,6 +49,11 @@ export function exportService(filePath: string) {
 
 export async function listUserServiceTemplateNames(): Promise<string[]> {
   const templatePath = await loadUserConfig();
+
+  if (!existsSync(templatePath)) {
+    await mkdirSync((templatePath), { recursive: true });
+  }
+
   const userTemplates = await readdirSync(templatePath);
   return userTemplates;
 }

@@ -1,7 +1,7 @@
 import { program } from 'commander';
 import saveCompose from './compose/composeIO';
 import { askForComposeData, processComposeData } from './compose/composeOperations';
-import { askForServiceData } from './service/serviceOperations';
+import { askForServicesData } from './service/serviceOperations';
 import { exportService } from './service/serviceIO';
 import loadUserConfig from './config/configService';
 
@@ -9,7 +9,7 @@ const MINIMUM_ARGS_SIZE = 2;
 
 function init() {
   askForComposeData()
-    .then(askForServiceData)
+    .then(askForServicesData)
     .then(processComposeData)
     .then(saveCompose);
 }
