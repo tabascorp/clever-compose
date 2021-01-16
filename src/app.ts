@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import init from './logic';
+import run from './logic';
 
-init();
+run();

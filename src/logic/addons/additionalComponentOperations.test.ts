@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
-import buildAdditionalComponents from './additionalComponentsBuilder';
-import ph from './constants';
+import createAdditionalComponents from './additionalComponentOperations';
+import { generateArrayOfPlaceholdersWithColon, generateArrayOfMapPlaceholders } from '../placeholder/placeholderOperations';
 
 const additionalComponentsInfo = {
-  additionalComponents: [
+  'additional-components': [
     'networks',
     'volumes',
   ],
@@ -13,29 +13,19 @@ const additionalComponentsInfo = {
 };
 
 const builtAdditionalComponents = {
-  networks: [
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-  ],
-  volumes: [
-    `${ph}:`,
-    `${ph}:`,
-    `${ph}:`,
-  ],
+  networks: generateArrayOfPlaceholdersWithColon(5),
+  volumes: generateArrayOfMapPlaceholders(3),
 };
 
 describe('Additional Components Builder', () => {
   describe('should return empty object', () => {
     it('if empty object was passed', (done) => {
-      expect(buildAdditionalComponents({})).to.be.empty;
+      expect(createAdditionalComponents({})).to.be.empty;
       done();
     });
 
     it('if no additional components info provided', (done) => {
-      expect(buildAdditionalComponents({
+      expect(createAdditionalComponents({
         additionalComponents: [],
       })).to.be.empty;
       done();
@@ -48,7 +38,7 @@ describe('Additional Components Builder', () => {
       delete wrongCountAdditionalComponents['networks-quantity'];
       delete wrongCountAdditionalComponents['volumes-quantity'];
 
-      expect(buildAdditionalComponents(wrongCountAdditionalComponents))
+      expect(createAdditionalComponents(wrongCountAdditionalComponents))
         .to.be.empty;
       done();
     });
@@ -56,7 +46,7 @@ describe('Additional Components Builder', () => {
 
   describe('should return components with count', () => {
     it('if component information and count was passed', (done) => {
-      expect(buildAdditionalComponents(additionalComponentsInfo))
+      expect(createAdditionalComponents(additionalComponentsInfo))
         .to.deep.equal(builtAdditionalComponents);
       done();
     });
@@ -75,7 +65,7 @@ describe('Additional Components Builder', () => {
 
       delete wrongCountResult.networks;
 
-      expect(buildAdditionalComponents(wrongCountAdditionalComponents))
+      expect(createAdditionalComponents(wrongCountAdditionalComponents))
         .to.deep.equal(wrongCountResult);
       done();
     });
@@ -93,7 +83,7 @@ describe('Additional Components Builder', () => {
 
       delete missingCountResult.networks;
 
-      expect(buildAdditionalComponents(missingCountAdditionalComponents))
+      expect(createAdditionalComponents(missingCountAdditionalComponents))
         .to.deep.equal(missingCountResult);
       done();
     });

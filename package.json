@@ -1,19 +1,21 @@
 {
   "name": "clever-compose",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
   "main": "src/app.ts",
   "bin": {
-    "ccg": "build/src/app.js"
+    "clever-compose": "build/src/app.js"
   },
   "scripts": {
-    "test:unit": "npx mocha -r ts-node/register \"src/**/*.test.ts\"",
-    "test:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run test:unit\"",
+    "build": "tsc",
+    "build:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"tsc\"",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "lint:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run lint\"",
     "fix": "eslint --fix src/",
-    "build": "tsc",
-    "dev": "nodemon"
+    "dev": "ts-node \"src/app.ts\"",
+    "dev:watch": "nodemon",
+    "test:unit": "npx mocha -r ts-node/register \"src/**/*.test.ts\"",
+    "test:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run test:unit\""
   },
   "keywords": [
     "cli",
@@ -33,6 +35,7 @@
   "homepage": "https://github.com/tabascorp/clever-compose#readme",
   "dependencies": {
     "@types/inquirer": "^7.3.1",
+    "commander": "^6.2.1",
     "inquirer": "^7.3.3",
     "js-yaml": "^3.14.0"
   },

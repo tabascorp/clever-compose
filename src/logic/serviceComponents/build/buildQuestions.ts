@@ -1,7 +1,7 @@
 import {
   serviceProps,
-} from '../../../static/compose-data.json';
-import { validateInt } from '../validator';
+} from '../../../../static/compose-data.json';
+import { validateInt, validateAtLeastOneOption } from '../../validator';
 
 const buildData = serviceProps.build;
 
@@ -13,6 +13,7 @@ export default [
     choices: buildData.default,
     pageSize: buildData.default.length,
     when: (answer) => answer.components.indexOf('build') !== -1,
+    validate: validateAtLeastOneOption,
   },
   ...buildData.quant.map((item) => ({
     type: 'input',
