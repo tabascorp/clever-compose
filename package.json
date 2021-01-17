@@ -1,11 +1,14 @@
 {
   "name": "clever-compose",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple CLI used to create docker-compose files for your project based on user created templates.",
-  "main": "src/app.ts",
+  "main": "build/src/app.js",
   "bin": {
     "clever-compose": "build/src/app.js"
   },
+  "files": [
+    "build/"
+  ],
   "scripts": {
     "build": "tsc",
     "build:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"tsc\"",
