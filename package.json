@@ -18,6 +18,7 @@
     "fix": "eslint --fix src/",
     "dev": "ts-node \"src/app.ts\"",
     "dev:watch": "nodemon",
+    "test": "npm run test:unit",
     "test:unit": "npx mocha -r ts-node/register \"src/**/*.test.ts\"",
     "test:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run test:unit\""
   },
