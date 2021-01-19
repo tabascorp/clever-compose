@@ -1,14 +1,8 @@
-import { writeFile } from 'fs';
+import { writeFileSync } from 'fs';
 import { safeDump } from 'js-yaml';
 import Compose from '.';
 
-export default function saveCompose(compose: Compose) {
+export default function saveCompose(compose: Compose, path: string = 'docker-compose.yml') {
   const composeYml = safeDump(compose, { skipInvalid: true });
-
-  writeFile('docker-compose.yml', composeYml, (err) => {
-    if (err) {
-      return console.warn(err);
-    }
-    return console.log('The file was saved!');
-  });
+  writeFileSync(path, composeYml); // TODO change to async
 }
