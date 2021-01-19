@@ -8,3 +8,4 @@ export default async function saveCompose(compose: Compose, path: string = 'dock
   }
   const composeYml = safeDump(compose, { skipInvalid: true });
   await writeFile(path, composeYml);
+}
