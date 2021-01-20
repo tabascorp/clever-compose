@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsc",
+    "build": "tsc && cp -r ./static/ ./build/",
     "build:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"tsc\"",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
     "lint:watch": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"npm run lint\"",

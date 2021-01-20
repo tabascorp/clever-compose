@@ -14,7 +14,7 @@ import Compose, { ComposeData } from '../compose';
 
 import loadUserConfig from '../config/configService';
 
-const templateFile = 'static/template-compose.yml';
+const templateFile = path.join(__dirname, '..', '..', '..', 'static', 'template-compose.yml');
 
 function getServiceNames(composeData: ComposeData): string[] {
   return Object.keys(composeData.services);

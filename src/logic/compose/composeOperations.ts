@@ -1,13 +1,7 @@
-import { prompt } from 'inquirer';
-import composeQuestions from './composeQuestions';
 import Compose, { ComposeData } from '.';
 import createAdditionalComponents from '../addons/additionalComponentOperations';
 import { Services } from '../service';
 import { AdditionalComponents } from '../addons';
-
-export async function askForComposeData() {
-  return prompt(composeQuestions);
-}
 
 export function createCompose(
   services: Services,
