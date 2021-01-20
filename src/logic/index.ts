@@ -1,21 +1,22 @@
 import { program } from 'commander';
+import { prompt } from 'inquirer';
 import saveCompose from './compose/composeIO';
-import { askForComposeData, processComposeData } from './compose/composeOperations';
+import { processComposeData } from './compose/composeOperations';
 import { askForServicesData } from './service/serviceOperations';
 import { exportService } from './service/serviceIO';
 import loadUserConfig from './config/configService';
+import composeQuestions from './compose/composeQuestions';
 
 const MINIMUM_ARGS_SIZE = 2;
 
 function init() {
-  askForComposeData()
+  prompt(composeQuestions)
     .then(askForServicesData)
     .then(processComposeData)
     .then(saveCompose);
 }
 
 function processArgs(args: string[]) {
-  console.log(args);
   program
     .version('0.0.1')
     .option('-e, --extract <path>', 'extracts services from docker-compose', 'docker-compose.yml')
@@ -35,4 +36,6 @@ export default async function run() {
       exportService(extractPath);
     }
   }
+
+  return Promise.resolve();
 }
