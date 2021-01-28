@@ -12,7 +12,7 @@ export default function createComponent(propName: string, quantities: Quantities
       case 'ports':
         return generateArrayOfMapPlaceholders(quantity);
 
-      case 'env':
+      case 'environment':
       case 'args':
         return generateArrayOfKeyPlaceholders(quantity);
 
