@@ -27,7 +27,7 @@
     ],
     "quant": [
       "depends_on",
-      "env",
+      "environment",
       "env_file",
       "expose",
       "links",
@@ -105,5 +105,6 @@
       "pause",
       "continue"
     ]
-  }
+  },
+  "templateComment" : "# Visit for help: https://github.com/tabascorp/clever-compose-cli-js#templates"
 }

@@ -4,10 +4,13 @@ import saveCompose from './compose/composeIO';
 import { processComposeData } from './compose/composeOperations';
 import { askForServicesData } from './service/serviceOperations';
 import { exportService } from './service/serviceIO';
-import loadUserConfig from './config/configService';
+import { loadUserConfig, updateTemplatesPath } from './config/configService';
 import composeQuestions from './compose/composeQuestions';
 
-const MINIMUM_ARGS_SIZE = 2;
+const EXTRACT = {
+  short: '-e',
+  long: '--extract',
+};
 
 function init() {
   prompt(composeQuestions)
@@ -18,24 +21,37 @@ function init() {
 
 function processArgs(args: string[]) {
   program
-    .version('0.0.1')
-    .option('-e, --extract <path>', 'extracts services from docker-compose', 'docker-compose.yml')
+    .version(process.env.npm_package_version)
+    .option(`${EXTRACT.short}, ${EXTRACT.long} [path]`, 'extracts services from docker-compose', './docker-compose.yml')
+    .option('-i, --ignore-tutorial', 'ignore tutorial how to modify service in file', false)
+    .option('-s, --show-tpath', 'show current path for your templates', false)
+    .option('-c, --change-tpath <new_path>', 'ignore tutorial how to modify service in file')
     .parse(args);
 }
 
 export default async function run() {
-  if (process.argv.length <= MINIMUM_ARGS_SIZE) {
-    await loadUserConfig();
-    init();
-  } else {
-    processArgs(process.argv);
+  processArgs(process.argv);
 
+  if (program.showTpath) {
+    const templatePath = await loadUserConfig();
+    console.log(templatePath);
+    return;
+  }
+
+  if (program.changeTpath !== undefined) {
+    await updateTemplatesPath(program.changeTpath);
+    return;
+  }
+
+  if (process.argv.includes(EXTRACT.short) || process.argv.includes(EXTRACT.long)) {
     const extractPath = program.extract;
 
     if (extractPath.length > 0) {
-      exportService(extractPath);
+      exportService(extractPath, program.ignoreTutorial);
     }
+    return;
   }
 
-  return Promise.resolve();
+  await loadUserConfig();
+  init();
 }
