@@ -21,7 +21,7 @@ function init() {
 
 function processArgs(args: string[]) {
   program
-    .version(process.env.npm_package_version)
+    .version('1.0.0')
     .option(`${EXTRACT.short}, ${EXTRACT.long} [path]`, 'extracts services from docker-compose', './docker-compose.yml')
     .option('-i, --ignore-tutorial', 'ignore tutorial how to modify service in file', false)
     .option('-s, --show-tpath', 'show current path for your templates', false)
